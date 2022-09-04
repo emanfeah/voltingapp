@@ -1,0 +1,53 @@
+# redis service and dployment
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: redis
+  name: redis
+  namespace: eks-voting-app
+spec:
+ clusterIP: None
+ ports:
+   - name: redis-service
+     port: 6379
+     targetPort: 6379
+ selector:
+   app: redis
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: eks-voting-app
+  labels:
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+     app: redis
+  template:
+    metadata:
+     labels:
+       app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:latest
+          ports:
+          - containerPort: 6379
+            name: redis
+
+
+
+
+
+
+
+
+
+
